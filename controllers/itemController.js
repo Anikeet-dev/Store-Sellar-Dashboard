@@ -1,16 +1,12 @@
 const Item = require('../models/item');
+const path = require('path');
 
-exports.getStore = async (req, res, next) => {
-    try {
-        const items = await Item.findAll();
-        res.render('store', { items });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+exports.getStore = (req, res) => {
+
+        res.sendFile(path.join(__dirname, '..', 'views', 'store.html'));
 };
 
-exports.getItems = async (req, res, next) => {
+exports.getItems = async (req, res) => {
     try {
         const items = await Item.findAll();
         res.json(items);
@@ -20,7 +16,7 @@ exports.getItems = async (req, res, next) => {
     }
 };
 
-exports.createItem = async (req, res, next) => {
+exports.createItem = async (req, res) => {
     try {
       const itemName = req.body.itemName;
       const description = req.body.description;
@@ -42,7 +38,7 @@ exports.createItem = async (req, res, next) => {
     }
 };
 
-exports.updateQuantity = async (req, res, next) => {
+exports.updateQuantity = async (req, res) => {
     try{
         const itemId = req.params.id;
         const item = await Item.findByPk(itemId);
@@ -63,7 +59,7 @@ exports.updateQuantity = async (req, res, next) => {
         }
     }
     catch(err){
-        console.log('Error updating quantity:', err);
+        console.error('Error updating quantity:', err);
     }
 };
 
